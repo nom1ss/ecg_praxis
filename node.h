@@ -14,5 +14,5 @@ public:
     void set_name(const string& new_name);
     int get_nr_children() const;
     Node* get_child(int i) const;
-    void add_child(Node child);
+    void add_child(Node* child);
 };
