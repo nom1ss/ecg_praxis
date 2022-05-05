@@ -67,18 +67,22 @@ void Node::create_complete_tree(int nr_child_nodes, int tree_depth) {
         this->add_child(to_add);
     }
 }
-/*
-void Node::print(ostream str) {
-    string current = this->name;
-    current += "\n\t";
-    for (int i = 0; i < this->get_nr_children(); i++) {
-        this->get_child(i)->print(str);
-    }
-    str.write((char*)&current, sizeof(string));
-}
 
-ostream& operator<<(ostream& os, Node* node) {
-    node->print(os);
+ostream& Node::print(ostream& os, int depth) const {
+    if (this == NULL) return os;
+    string current = "";
+    for (int i = 0; i < depth; i++)
+        current += "   ";
+    current += this->get_name() + "\n";
+    os << current;
+    for (int i = 1; i <= this->get_nr_children(); i+=1) {
+        this->get_child(i)->print(os, depth + 1);
+    }
     return os;
 }
-*/
+
+ostream& operator<<(ostream& os, Node* node)
+{
+    int depth = 0;
+    return node->print(os, depth);
+}

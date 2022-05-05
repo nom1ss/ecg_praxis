@@ -19,6 +19,7 @@ public:
     Node* get_child(int i) const;
     void add_child(Node* child);
     void create_complete_tree(int nr_child_nodes, int tree_depth);
-    friend ostream& operator<<(ostream& os, const Node* node);
-    void print(ostream str);
+    ostream& print(ostream& os, int depth) const;
 };
+
+extern ostream& operator<<(ostream& os, Node* node);

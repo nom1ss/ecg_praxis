@@ -18,10 +18,11 @@ int main() {
 
     cout << "Number of children in root: " << root->get_nr_children() << endl;
     cout << root->get_child(2)->get_name() << endl;
-    delete root;
+    //delete root;
     */
 
     root->create_complete_tree(2, 4);
+    cout << root;
 
     return 0;
 }
