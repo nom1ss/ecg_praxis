@@ -1,10 +1,18 @@
 #include <iostream>
 #include <string>
+#include <sstream>
+#include <ostream>
 using namespace std;
 #include "node.h"
 
-Node::Node(const string& name) : name(name) {
-    cout << "Node with name " << name << " created!" << endl;
+int Node::node_id = 0;
+
+Node::Node(const string& name = "") : name(name) {
+    if (name == "") {
+        default_name();
+    }
+    else ++node_id;
+    cout << "Node: name " << this->name << "; id " << node_id << " created!" << endl;
 };
 
 Node::~Node() {
@@ -15,12 +23,22 @@ Node::~Node() {
     cout << "Node with name " << name << " deleted!" << endl;
 };
 
+
 string Node::get_name() const {
     return this->name;
 }
 
 void Node::set_name(const string& new_name) {
-    name = new_name;
+    if (new_name == "") default_name();
+    else name = new_name;
+}
+
+void Node::default_name() {
+    ++node_id;
+    stringstream str_sm;
+    str_sm << node_id;
+    string node_id_str = str_sm.str();
+    this->name = "node_" + node_id_str;
 }
 
 int Node::get_nr_children() const {
@@ -38,5 +56,29 @@ Node* Node::get_child(int i) const {
 }
 
 void Node::add_child(Node* child) {
-    nodes.push_back(child);
+    this->nodes.push_back(child);
 }
+
+void Node::create_complete_tree(int nr_child_nodes, int tree_depth) {
+    if (tree_depth <= 1) return;
+    for (int i = 0; i < nr_child_nodes; i++) {
+        Node* to_add = new Node("");
+        to_add->create_complete_tree(nr_child_nodes, tree_depth - 1);
+        this->add_child(to_add);
+    }
+}
+/*
+void Node::print(ostream str) {
+    string current = this->name;
+    current += "\n\t";
+    for (int i = 0; i < this->get_nr_children(); i++) {
+        this->get_child(i)->print(str);
+    }
+    str.write((char*)&current, sizeof(string));
+}
+
+ostream& operator<<(ostream& os, Node* node) {
+    node->print(os);
+    return os;
+}
+*/
